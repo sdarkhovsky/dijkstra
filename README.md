@@ -1,3 +1,5 @@
 # dijkstra
-Different implementations of Dijkstra slgorithms in C++ and Python
+A few implementations of Dijkstra algorithm in C++ and Python
 
+Building with g++:
+g++ -g -std=c++11 dijkstra.cpp -o dijkstra
