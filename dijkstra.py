@@ -78,8 +78,8 @@ def main():
    
    S = []
    Q = bad_priority_queue() 
-   for i in range(0, num_nodes):
-      Q.push(g.nodes[i])
+   for key,value in g.nodes.items():
+      Q.push(value)
   
    while (not Q.empty()):
       u = Q.pop_top()

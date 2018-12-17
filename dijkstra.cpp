@@ -156,8 +156,8 @@ int main()
    
    list<Node*> S;
    bad_priority_queue <Node*,NodeCostComparison<Node*>> Q; 
-   for (int i = 0; i < num_nodes; i++) {
-      Q.push(&g.nodes[i]);
+   for (auto it=g.nodes.begin(); it != g.nodes.end(); it++) {
+      Q.push(&it->second);
    }      
 
    while (!Q.empty()) {
