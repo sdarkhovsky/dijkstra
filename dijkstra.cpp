@@ -1,6 +1,6 @@
 #include <vector>
 #include <map>
-#include <queue>
+#include <algorithm>
 #include <list>
 #include <iostream>
 
@@ -93,14 +93,42 @@ class Graph {
 };
 
 
+template <class T>
 class NodeCostComparison
 {
 public:
-  bool operator() (const Node* lhs, const Node* rhs) const
+  bool operator() (const T lhs, const T rhs) const
   {
-    return (lhs->min_cost > rhs->min_cost);
+    return (lhs->min_cost < rhs->min_cost);
   }
 };
+
+template <class T, class Compare>
+class bad_priority_queue {
+   public:
+   bad_priority_queue() {
+   }
+
+   void push(const T& elem) {
+      elems.push_back(elem);
+   }
+
+   bool empty() {
+      return elems.empty();
+   }
+
+   T  pop_top() {
+
+      auto it = min_element(elems.begin(), elems.end(), comp);
+      T val = *it;
+      elems.erase(it);
+      return val;
+   }
+
+   Compare comp;
+   list<T> elems;
+};
+
 
 // see Algorithms by Cormen, Leiserson, Rivest, ch.25.2
 int main()
@@ -127,14 +155,13 @@ int main()
    
    
    list<Node*> S;
-   priority_queue <Node*,vector<Node*>,NodeCostComparison> Q; 
+   bad_priority_queue <Node*,NodeCostComparison<Node*>> Q; 
    for (int i = 0; i < num_nodes; i++) {
       Q.push(&g.nodes[i]);
    }      
 
    while (!Q.empty()) {
-      Node* u = Q.top();
-      Q.pop();
+      Node* u = Q.pop_top();
       S.push_back(u);
       for (auto it = u->outgoing_edges.begin(); it != u->outgoing_edges.end(); it++) {
          Node* v = (*it)->dst;
